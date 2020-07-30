@@ -10,3 +10,9 @@ Bổ sung 5 cặp phím tắt:
 5. Ctrl+Alt+Down: Nhảy tới label ở kế dưới.
 
 4 và 5 rất hửu ích khi chúng ta ở trong 1 vùng undefined code, data thiệt dài, nhảy tới label up và down để dễ define.
+
+File ida.idc chúng ta không cần phải load và run, mặc định IDA sẽ load và excute hàm main() cho chúng ta.
+Nên các hotkeys là có sẵn ngay.
+
+Nếu có tranh chấp với hotkeys khác bạn đang dùng (mình đã chọn và cân nhắc kỹ), các bạn vào Options - Shortcuts... và Show command palettes...
+kiểm tra và edit lại với hotkeys bạn chọn trong file ida.idc này.

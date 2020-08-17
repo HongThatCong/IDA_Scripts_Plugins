@@ -2,7 +2,7 @@
 Các IDC và IDAPython scripts nhỏ, có ích trong quá trình dùng IDA.
 # ida.idc
 Backup file ida.idc cũ của bạn trong IDADIR\idc, copy file này vào.
-Bổ sung 5 cặp phím tắt:
+Bổ sung 6 cặp phím tắt:
 1. Shift-U: convert to Unicode String tại current screen EA.
 2. Alt+Shift+Up: Nhảy tới đầu hàm hiện tại.
 3. Alt+Shift+Down: Nhảy tới cuối hàm hiện tại.

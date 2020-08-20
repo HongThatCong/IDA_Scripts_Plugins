@@ -11,6 +11,11 @@
 
 #define UNLOADED_FILE   1
 
+#ifndef SN_FORCE
+    // IDC IDA 7.0 to 7.2 not define SN_FORCE
+    #define SN_FORCE    0x800
+#endif
+
 //-----------------------------------------------------------------------
 // A singleton class for managing breakpoints
 class BreakpointManager
@@ -230,24 +235,32 @@ static NamePointer()
                 s_name = substr(s_name, 0, p_second);
             }
 
-            // replcae + and : with _ char
+            // replcae +, :, space... with _ char
             len = strlen(s_name);
             if (len > 0)
             {
                 for (i = 0; i < len; ++i)
                 {
                     ch = s_name[i];
-                    if (('+' == ch) || (':' == ch))
+                    if (("+" == ch) || (":" == ch) || (" " == ch))
                     {
-                        s_name[i] = '_';
+                        s_name[i] = "_";
                     }
                 }
 
                 s_name = "p_" + s_name;
-                set_name(ea, s_name, SN_NOCHECK | SN_NOWARN);
+                set_name(ea, s_name, SN_CHECK | SN_NOWARN | SN_FORCE);
 
                 return 1;
             }
+            else
+            {
+                msg("0x%X: name is empty\n");
+            }
+        }
+        else
+        {
+            msg("0x%X: string 'offset' not found\n");
         }
     }
     else

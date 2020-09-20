@@ -12,7 +12,7 @@
 #define UNLOADED_FILE   1
 
 #ifndef SN_FORCE
-    // IDC IDA 7.0 to 7.2 not define SN_FORCE
+    // IDC IDA 7.0 to 7.2 not defined SN_FORCE
     #define SN_FORCE    0x800
 #endif
 
@@ -97,7 +97,9 @@ static Appcall_Here()
     set_inf_attr(INF_APPCALL_OPTIONS, APPCALL_MANUAL);
     dbg_appcall(get_first_seg(), t);
     set_inf_attr(INF_APPCALL_OPTIONS, last_opt);
+#ifdef Eip
     Eip = h;
+#endif
 }
 
 static Appcall_Start()
@@ -299,14 +301,17 @@ static RegisterHotkeys()
     add_idc_hotkey("Shift+P", "NamePointer");
     msg("Shift+P: name pointer\n");
 
-    // Appcalls
-    last_cmd = "";
-    add_idc_hotkey("Ctrl-Alt-F9",  "Appcall_Start");
-    msg("Ctrl-Alt-F9: Appcall_Start\n");
-    add_idc_hotkey("Ctrl-Alt-F10", "cleanup_appcall");
-    msg("Ctrl-Alt-F10: cleanup_appcall\n");
-    add_idc_hotkey("Ctrl-Alt-F4",  "Appcall_Here");
-    msg("Ctrl-Alt-F4: Appcall_Here\n");
+    // Appcalls, only enable in PE mode
+    if (FT_PE == get_inf_attr(INF_FILETYPE))
+    {
+        last_cmd = "";
+        add_idc_hotkey("Ctrl-Alt-F9",  "Appcall_Start");
+        msg("Ctrl-Alt-F9: Appcall_Start\n");
+        add_idc_hotkey("Ctrl-Alt-F10", "cleanup_appcall");
+        msg("Ctrl-Alt-F10: cleanup_appcall\n");
+        add_idc_hotkey("Ctrl-Alt-F4",  "Appcall_Here");
+        msg("Ctrl-Alt-F4: Appcall_Here\n");
+    }
 
     msg("--------------------------------------------------------------------------------\n\n");
 }

@@ -1,10 +1,10 @@
 //
-//      This file is automatically executed when IDA is started.
-//      You can define your own IDC functions and assign hotkeys to them.
+// This file is automatically executed when IDA is started.
+// You can define your own IDC functions and assign hotkeys to them.
 //
-//      You may add your frequently used functions here and they will
-//      be always available.
-///     Add some usefull shortcuts to IDA by HTC - VinCSS (a member of Vingroup)
+// You may add your frequently used functions here and they will
+// be always available.
+// Add some usefull shortcuts to IDA by HTC - VinCSS (a member of Vingroup)
 //
 
 #include <idc.idc>
@@ -31,7 +31,9 @@ class BreakpointManager
     {
         auto count = this.Count();
         if (index >= count)
+        {
             throw sprintf("Invalid breakpoint index %d (0..%d expected).", index, count);
+        }
         return Breakpoint(index);
     }
 
@@ -78,7 +80,9 @@ static SWord(ea)
 {
     auto v = get_wide_word(ea);
     if (v & 0x8000)
+    {
         v = v | ~0xFFFF;
+    }
     return v;
 }
 //
@@ -144,7 +148,7 @@ static CreateUnicodeString()
 
         auto old_type = get_inf_attr(INF_STRTYPE);
         set_inf_attr(INF_STRTYPE, STRTYPE_C_16);
-        create_strlit(ea);
+        create_strlit(ea, endEA - ea);
         set_inf_attr(INF_STRTYPE, old_type);
     }
 }
@@ -214,7 +218,7 @@ static JumpToEndOfFunction()
     }
 }
 //-----------------------------------------------------------------------
-// bag code to avoid rva offset 32 :(
+// bad code to avoid rva offset 32 :(
 static NamePointer()
 {
     auto ea, f, s_asm, s_name, p_first, p_second;
@@ -305,32 +309,32 @@ static RegisterHotkeys()
     if (FT_PE == get_inf_attr(INF_FILETYPE))
     {
         last_cmd = "";
-        add_idc_hotkey("Ctrl-Alt-F9",  "Appcall_Start");
+        add_idc_hotkey("Ctrl-Alt-F9", "Appcall_Start");
         msg("Ctrl-Alt-F9: Appcall_Start\n");
         add_idc_hotkey("Ctrl-Alt-F10", "cleanup_appcall");
         msg("Ctrl-Alt-F10: cleanup_appcall\n");
-        add_idc_hotkey("Ctrl-Alt-F4",  "Appcall_Here");
+        add_idc_hotkey("Ctrl-Alt-F4", "Appcall_Here");
         msg("Ctrl-Alt-F4: Appcall_Here\n");
     }
 
     msg("--------------------------------------------------------------------------------\n\n");
 }
-//  HTC - end
+// HTC - end
 //
 //-----------------------------------------------------------------------
 static main(void)
 {
     //
-    //      This function is executed when IDA is started.
+    // This function is executed when IDA is started.
     //
-    //      Add statements to fine-tune your IDA here.
+    // Add statements to fine-tune your IDA here.
     //
 
     // Instantiate the breakpoints singleton object
     Breakpoints = BreakpointManager();
 
     // uncomment this line to remove full paths in the debugger process options:
-    // set_inf_attr(INF_LFLAGS, LFLG_DBG_NOPATH | get_inf_attr(INF_LFLAGS));
+    set_inf_attr(INF_LFLAGS, LFLG_DBG_NOPATH | get_inf_attr(INF_LFLAGS));
 
     // HTC
     RegisterHotkeys();

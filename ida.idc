@@ -144,11 +144,11 @@ static CreateUnicodeString()
 
     if (endEA > ea)
     {
-        del_items(ea, DELIT_SIMPLE, endEA - ea);
+        del_items(ea, DELIT_DELNAMES, endEA - ea + 2);
 
         auto old_type = get_inf_attr(INF_STRTYPE);
         set_inf_attr(INF_STRTYPE, STRTYPE_C_16);
-        create_strlit(ea, endEA - ea);
+        create_strlit(ea, endEA - ea + 2);
         set_inf_attr(INF_STRTYPE, old_type);
     }
 }

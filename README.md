@@ -29,3 +29,10 @@ Nên các hotkeys là có sẵn ngay.
 Nếu có tranh chấp với hotkeys khác bạn đang dùng (mình đã chọn và cân nhắc kỹ), các bạn vào Options - Shortcuts... và Show command palettes...
 
 Kiểm tra và edit lại với hotkeys bạn chọn trong file ida.idc này.
+
+# vb_DllFunctionCall.py
+Source gốc từ bài: https://blog.talosintelligence.com/discovering-dynamically-loaded-api-in/
+
+Đã thay đổi các struct theo kết quả RE msvbvm60.dll với .dbg file.
+
+Fix vài lỗi và port hẳn qua IDA 7.x, IDAPython3 không BC95

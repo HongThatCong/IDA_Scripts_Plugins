@@ -1,5 +1,5 @@
 # IDA_Scripts
-Các IDC và IDAPython scripts nhỏ, có ích trong quá trình dùng IDA.
+Các IDC, IDAPython scripts và plugins nhỏ, có ích trong quá trình dùng IDA.
 # ida.idc
 Backup file ida.idc cũ của bạn trong IDADIR\idc, copy file này vào.
 Bổ sung 6 cặp phím tắt:

@@ -36,3 +36,12 @@ Source gốc từ bài: https://blog.talosintelligence.com/discovering-dynamical
 Đã thay đổi các struct theo kết quả RE msvbvm60.dll với .dbg file.
 
 Fix vài lỗi và port hẳn qua IDA 7.x, IDAPython3 không BC95
+
+# idaemu
+Port lên Python 3 và IDA 7.x
+
+Source gốc: https://github.com/36hours/idaemu
+
+Copy idaemu.py vào %IDAUSRDIR%\python\3
+
+Xem hướng dẫn sử dung trong source hay từ link gốc trên

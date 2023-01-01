@@ -4,17 +4,15 @@
 //
 // You may add your frequently used functions here and they will
 // be always available.
-// Add some usefull shortcuts to IDA by HTC - VinCSS (a member of Vingroup)
 //
-
+// You can customize the initial behaviour of IDA without modifying
+// this file but by putting your logic in
+//  %appdata%/Hex-Rays/IDA Pro/idauser.idc  (Windows)
+//  $HOME/.idapro/idauser.idc               (Linux & Mac)
+// Define the function called user_main() there and it will be called.
+//
 #include <idc.idc>
-
-#define UNLOADED_FILE   1
-
-#ifndef SN_FORCE
-    // IDC IDA 7.0 to 7.2 not defined SN_FORCE
-    #define SN_FORCE    0x800
-#endif
+#softinclude <idauser.idc> // please define user_main() in this file.
 
 //-----------------------------------------------------------------------
 // A singleton class for managing breakpoints
@@ -120,6 +118,7 @@ static Appcall_Start()
     eval(s);
     set_inf_attr(INF_APPCALL_OPTIONS, last_opt);
 }
+
 //
 // HTC - begin
 //-----------------------------------------------------------------------
@@ -152,11 +151,12 @@ static CreateUnicodeString()
         set_inf_attr(INF_STRTYPE, old_type);
     }
 }
+
 //-----------------------------------------------------------------------
 static JumpToPrevLabel()
 {
     auto name;
-    auto ea = prev_not_tail(get_screen_ea());
+    auto ea = prev_head(get_screen_ea(), 0);
     while (BADADDR != ea)
     {
         name = get_name(ea);
@@ -165,7 +165,7 @@ static JumpToPrevLabel()
             break;
         }
 
-        ea = prev_not_tail(ea);
+        ea = prev_head(ea, 0);
     }
 
     // Found an ea ?
@@ -174,11 +174,12 @@ static JumpToPrevLabel()
         jumpto(ea);
     }
 }
+
 //-----------------------------------------------------------------------
 static JumpToNextLabel()
 {
     auto name;
-    auto ea = next_not_tail(get_screen_ea());
+    auto ea = next_head(get_screen_ea(), BADADDR);
     while (BADADDR != ea)
     {
         name = get_name(ea);
@@ -187,7 +188,7 @@ static JumpToNextLabel()
             break;
         }
 
-        ea = next_not_tail(ea);
+        ea = next_head(ea, BADADDR);
     }
 
     // Found an ea ?
@@ -196,6 +197,7 @@ static JumpToNextLabel()
         jumpto(ea);
     }
 }
+
 //-----------------------------------------------------------------------
 static JumpToBeginOfFunction()
 {
@@ -206,6 +208,7 @@ static JumpToBeginOfFunction()
         jumpto(ea);
     }
 }
+
 //-----------------------------------------------------------------------
 static JumpToEndOfFunction()
 {
@@ -217,6 +220,7 @@ static JumpToEndOfFunction()
         jumpto(ea);
     }
 }
+
 //-----------------------------------------------------------------------
 // bad code to avoid rva offset 32 :(
 static NamePointer()
@@ -276,6 +280,7 @@ static NamePointer()
 
     return 0;
 }
+
 //-----------------------------------------------------------------------
 static RegisterHotkeys()
 {
@@ -319,8 +324,10 @@ static RegisterHotkeys()
 
     msg("--------------------------------------------------------------------------------\n\n");
 }
+
 // HTC - end
 //
+
 //-----------------------------------------------------------------------
 static main(void)
 {
@@ -338,4 +345,19 @@ static main(void)
 
     // HTC
     RegisterHotkeys();
+
+    // idauser.idc should define user_main(), call it here.
+    auto e;
+    try
+    {
+        user_main();
+    }
+    catch (e)
+    {
+        // if idauser.idc did not exist, silently ignore the call error.
+        if (e.description != "Attempt to call undefined function 'user_main'")
+        {
+            throw e;
+        }
+    }
 }

@@ -155,17 +155,17 @@ static CreateUnicodeString()
 //-----------------------------------------------------------------------
 static JumpToPrevLabel()
 {
-    auto name;
-    auto ea = prev_head(get_screen_ea(), 0);
+    auto f;
+    auto ea = prev_not_tail(get_screen_ea());
     while (BADADDR != ea)
     {
-        name = get_name(ea);
-        if (strlen(name) > 0)
+        f = get_full_flags(ea);
+        if (f & FF_ANYNAME)
         {
             break;
         }
 
-        ea = prev_head(ea, 0);
+        ea = prev_not_tail(ea);
     }
 
     // Found an ea ?
@@ -178,17 +178,17 @@ static JumpToPrevLabel()
 //-----------------------------------------------------------------------
 static JumpToNextLabel()
 {
-    auto name;
-    auto ea = next_head(get_screen_ea(), BADADDR);
+    auto f;
+    auto ea = next_not_tail(get_screen_ea());
     while (BADADDR != ea)
     {
-        name = get_name(ea);
-        if (strlen(name) > 0)
+        f = get_full_flags(ea);
+        if (f & FF_ANYNAME)
         {
             break;
         }
 
-        ea = next_head(ea, BADADDR);
+        ea = next_not_tail(ea);
     }
 
     // Found an ea ?

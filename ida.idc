@@ -124,38 +124,54 @@ static Appcall_Start()
 //-----------------------------------------------------------------------
 static CreateUnicodeString()
 {
-    auto ea = get_screen_ea();
+    auto old_type = 0;
 
-    auto w = 0;
-    auto endEA = ea;
-    while (endEA != BADADDR)
+    // Check user selected a range
+    auto start_sel = read_selection_start();
+    auto end_sel = read_selection_end();
+    if ((start_sel != BADADDR) && (end_sel != BADADDR))
     {
-        w = get_wide_word(endEA);
-        if (0 == w)
-        {
-            break;
-        }
-        else
-        {
-            endEA = endEA + 2;
-        }
-    }
-
-    if (endEA > ea)
-    {
-        del_items(ea, DELIT_DELNAMES, endEA - ea + 2);
-
-        auto old_type = get_inf_attr(INF_STRTYPE);
+        old_type = get_inf_attr(INF_STRTYPE);
         set_inf_attr(INF_STRTYPE, STRTYPE_C_16);
-        create_strlit(ea, endEA - ea + 2);
+        create_strlit(start_sel, end_sel - start_sel);
         set_inf_attr(INF_STRTYPE, old_type);
+    }
+    else
+    {
+        auto w = 0;
+        auto ea = get_screen_ea();
+        auto endEA = ea;
+
+        // User not selected a range, begin scan 0x00 0x00 byte from current screen ea
+        while (endEA != BADADDR)
+        {
+            w = get_wide_word(endEA);
+            if (0 == w)
+            {
+                break;
+            }
+            else
+            {
+                endEA = endEA + 2;
+            }
+        }
+
+        if (endEA > ea)
+        {
+            del_items(ea, DELIT_DELNAMES, endEA - ea + 2);
+
+            old_type = get_inf_attr(INF_STRTYPE);
+            set_inf_attr(INF_STRTYPE, STRTYPE_C_16);
+            create_strlit(ea, endEA - ea + 2);
+            set_inf_attr(INF_STRTYPE, old_type);
+        }
     }
 }
 
 //-----------------------------------------------------------------------
 static JumpToPrevLabel()
 {
-    auto f;
+    auto f = 0;
     auto ea = prev_not_tail(get_screen_ea());
     while (BADADDR != ea)
     {
@@ -173,12 +189,16 @@ static JumpToPrevLabel()
     {
         jumpto(ea);
     }
+    else
+    {
+        msg("Could not find prev label\n");
+    }
 }
 
 //-----------------------------------------------------------------------
 static JumpToNextLabel()
 {
-    auto f;
+    auto f = 0;
     auto ea = next_not_tail(get_screen_ea());
     while (BADADDR != ea)
     {
@@ -195,6 +215,10 @@ static JumpToNextLabel()
     if (BADADDR != ea)
     {
         jumpto(ea);
+    }
+    else
+    {
+        msg("Could not find next label\n");
     }
 }
 

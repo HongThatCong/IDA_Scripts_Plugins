@@ -45,3 +45,6 @@ Source gốc: https://github.com/36hours/idaemu
 Copy idaemu.py vào %IDAUSRDIR%\python\3
 
 Xem hướng dẫn sử dung trong source hay từ link gốc trên
+
+# RemoveVBAMacroPWD.py
+Python 3 script (ported) để change, remove VBA password protected với các MS Office files

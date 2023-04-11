@@ -48,3 +48,13 @@ Xem hướng dẫn sử dung trong source hay từ link gốc trên
 
 # RemoveVBAMacroPWD.py
 Python 3 script (ported) để change, remove VBA password protected với các MS Office files
+
+# function_plus.py
+Run as IDAPython script file.
+
+Source gốc từ: https://gist.github.com/ox1111/2f2e6aee728d89062d03cf931fc2c720
+
+Đã port lên Python 3 và IDA 7.x. Đã test.
+
+Cung cấp tính năng mở rộng hơn so với "Functions" window của IDA, group các hàm, các child methods/functions...
+
